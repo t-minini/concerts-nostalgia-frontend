@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import style from './AddConcert.module.css';
 import { api } from '../../api/concerts-nostalgia-api';
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 import {
@@ -24,7 +25,7 @@ import {
   ConfigProvider,
 } from 'antd';
 
-export function AddConcert() {
+export function AddConcert({ onCreate }) {
   const [rate, setRate] = useState();
   const [open, setOpen] = useState(false);
 
@@ -73,6 +74,7 @@ export function AddConcert() {
 
       console.log(response);
 
+      onCreate(response.data);
       setConcert(response.data);
       
       message.loading({ content: 'Creating concert...', duration: 2 });
@@ -101,17 +103,20 @@ export function AddConcert() {
 
   return (
     <>
-      <ConfigProvider theme={rainbowBtnTheme}>
-        <Tooltip title="New Concert">
-          <Button
-            onClick={showModal}
-            type="primary"
-            shape="circle"
-            icon={<PlusOutlined />}
-            size="large"
-          />
-        </Tooltip>
-      </ConfigProvider>
+      <div className={style['add-concert-fab']}>
+        <ConfigProvider theme={rainbowBtnTheme}>
+          <Tooltip title="New Concert" placement="left">
+            <Button
+              onClick={showModal}
+              type="primary"
+              shape="circle"
+              icon={<PlusOutlined style={{ fontSize: '28px' }} />}
+              size="large"
+              style={{ width: '60px', height: '60px' }}
+            />
+          </Tooltip>
+        </ConfigProvider>
+      </div>
       <ConfigProvider
         theme={{
           components: {

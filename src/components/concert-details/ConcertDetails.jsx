@@ -19,6 +19,7 @@ import {
   Select,
   Upload,
   Button,
+  message,
   ConfigProvider,
 } from 'antd';
 
@@ -62,27 +63,44 @@ export function ConcertDetails(currentConcert) {
   }
 
   async function handleSubmit(event) {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
     event.preventDefault();
+    setConfirmLoading(true);
     try {
       const clone = { ...concertData };
 
       delete clone._id;
       await api.put(`/concerts/edit/${concertData._id}`, clone);
+      currentConcert.onUpdate(concertData);
+
+      message.loading({ content: 'Updating concert...', duration: 2 });
+      setTimeout(() => {
+        message.success({
+          content: 'Concert updated successfully!',
+          duration: 2,
+        });
+        setOpen(false);
+        setEditMode(false);
+        setConfirmLoading(false);
+      }, 2000);
     } catch (error) {
       console.log(error);
+      setConfirmLoading(false);
+      message.error('Failed to update concert!');
     }
   }
 
   async function handleDelete() {
     try {
       await api.delete(`/concerts/delete/${concertData._id}`);
+      currentConcert.onDelete(concertData._id);
+
+      message.success({
+        content: 'Concert deleted successfully!',
+        duration: 2,
+      });
     } catch (error) {
       console.log(error);
+      message.error('Failed to delete concert!');
     }
     setOpen(false);
   }

@@ -30,6 +30,20 @@ export function TicketsList() {
     fetchConcerts();
   }, []);
 
+  function handleConcertCreated(newConcert) {
+    setConcerts((prev) => [...prev, newConcert]);
+  }
+
+  function handleConcertUpdated(updatedConcert) {
+    setConcerts((prev) =>
+      prev.map((c) => (c._id === updatedConcert._id ? updatedConcert : c))
+    );
+  }
+
+  function handleConcertDeleted(id) {
+    setConcerts((prev) => prev.filter((c) => c._id !== id));
+  }
+
   const Rating = ({ rating }) => {
     const filledStars = Array.from({ length: rating }, (_, ratingIndex) => (
       <span key={ratingIndex} className={style['ticket__container-rate']}>
@@ -55,7 +69,6 @@ export function TicketsList() {
     <section id="tickets" className={style.tickets}>
       <div className={style['ticket__title-container']}>
         <h2 className={style.tickets__title}>concerts</h2>
-        <AddConcert />
       </div>
       <hr className={style['tickets__break']} />
       <div className={style.tickets__wrapper}>
@@ -69,6 +82,8 @@ export function TicketsList() {
             >
               <ConcertDetails
                 concerts={currentConcert}
+                onUpdate={handleConcertUpdated}
+                onDelete={handleConcertDeleted}
               />
               <div className={style['ticket__container-info']}>
                 <p className={style['ticket__container-tour']}>
@@ -97,6 +112,7 @@ export function TicketsList() {
           );
         })}
       </div>
+      <AddConcert onCreate={handleConcertCreated} />
     </section>
   );
 }
