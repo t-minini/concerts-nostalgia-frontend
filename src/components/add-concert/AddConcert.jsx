@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import style from './AddConcert.module.css';
 import { api } from '../../api/concerts-nostalgia-api';
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
@@ -26,7 +27,6 @@ import {
 } from 'antd';
 
 export function AddConcert({ onCreate }) {
-  const [rate, setRate] = useState();
   const [open, setOpen] = useState(false);
 
   const [concert, setConcert] = useState({
@@ -45,11 +45,6 @@ export function AddConcert({ onCreate }) {
   }
 
   function handleChange(event) {
-    setConcert({ ...concert, [event.target.name]: event.target.value });
-  }
-
-  function handleRating(event, newValue) {
-    setRate(newValue);
     setConcert({ ...concert, [event.target.name]: event.target.value });
   }
 
@@ -191,16 +186,12 @@ export function AddConcert({ onCreate }) {
                     />
                   </Form.Item>
                   <Form.Item
-                    name="rating"
                     label={<label style={{ color: '#ffffff' }}>rating</label>}
-                    onChange={handleRating}
-                    placeholder="choose a rate"
-                    // value={concert.rating}
                   >
                     <Select
                       placeholder="choose a rate"
                       name="rating"
-                      value={concert.rating}
+                      value={concert.rating || undefined}
                       onChange={(value) =>
                         setConcert({ ...concert, rating: parseInt(value, 10) })
                       }
@@ -238,7 +229,7 @@ export function AddConcert({ onCreate }) {
                     <DatePicker
                       name="year"
                       placeholder="enter year"
-                      // value={concert.year}
+                      value={concert.year ? dayjs().year(concert.year) : null}
                       picker="year"
                       style={{
                         width: 240,
@@ -268,7 +259,7 @@ export function AddConcert({ onCreate }) {
                     <Select
                       placeholder="choose ticket style"
                       name="background"
-                      // value={concert.background}
+                      value={concert.background || undefined}
                       onChange={(value) =>
                         setConcert({ ...concert, background: value })
                       }

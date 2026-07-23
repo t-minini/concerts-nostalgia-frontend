@@ -16,7 +16,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className={style.hero}>
+    <section id="hero" className={style.hero}>
       <div className={style.hero__container}>
         <h1 className={style.hero__title}>concerts nostalgia</h1>
         <p className={style.hero__text}>your live concerts journey, revisited</p>

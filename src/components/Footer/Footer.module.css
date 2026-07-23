@@ -17,6 +17,7 @@
 
 .footer__title-container {
   display: flex;
+  cursor: pointer;
   flex-direction: column;
 }
 

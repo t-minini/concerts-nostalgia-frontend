@@ -1,15 +1,20 @@
+import { Link } from 'react-scroll';
 import style from './Footer.module.css';
 
 export function Footer() {
   return (
     <footer className={style.footer}>
       <div className={style.footer__container}>
-        <div className={style['footer__title-container']}>
+        <Link
+          to="hero"
+          smooth={true}
+          className={style['footer__title-container']}
+        >
           <h2 className={style.footer__title}>concerts nostalgia</h2>
           <p className={style.footer__text}>
             your live concerts journey, revisited
           </p>
-        </div>
+        </Link>
         <div className={style['footer__links-container']}>
           <a
             rel="noreferrer"

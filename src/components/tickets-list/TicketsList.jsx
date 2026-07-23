@@ -1,8 +1,12 @@
 import style from './TicketsList.module.css';
 import { useState, useEffect, useMemo } from 'react';
-import { Select, ConfigProvider } from 'antd';
+import { Select, Button, ConfigProvider } from 'antd';
+import {
+  SortAscendingOutlined,
+  SortDescendingOutlined,
+} from '@ant-design/icons';
 import { api } from '../../api/concerts-nostalgia-api';
-import { selectTheme } from '../../styles/antdesign-themes';
+import { selectTheme, rainbowBtnTheme } from '../../styles/antdesign-themes';
 import { AddConcert } from '../add-concert/AddConcert';
 import { ConcertDetails } from './../concert-details/ConcertDetails';
 
@@ -12,7 +16,6 @@ const SORT_OPTIONS = [
   { value: 'location', label: 'location' },
   { value: 'city', label: 'city' },
   { value: 'country', label: 'country' },
-  { value: 'year', label: 'year' },
   { value: 'rating', label: 'rating' },
 ];
 
@@ -58,21 +61,26 @@ export function TicketsList() {
     setConcerts((prev) => prev.filter((c) => c._id !== id));
   }
 
-  const [sortField, setSortField] = useState(null);
+  const [sortField, setSortField] = useState('year');
+  const [sortDirection, setSortDirection] = useState('desc');
 
   const sortedConcerts = useMemo(() => {
     if (!sortField) return concerts;
 
+    const direction = sortDirection === 'asc' ? 1 : -1;
     const sorted = [...concerts];
     if (NUMERIC_SORT_FIELDS.has(sortField)) {
-      sorted.sort((a, b) => (a[sortField] ?? 0) - (b[sortField] ?? 0));
+      sorted.sort(
+        (a, b) => ((a[sortField] ?? 0) - (b[sortField] ?? 0)) * direction
+      );
     } else {
-      sorted.sort((a, b) =>
-        (a[sortField] ?? '').localeCompare(b[sortField] ?? '')
+      sorted.sort(
+        (a, b) =>
+          (a[sortField] ?? '').localeCompare(b[sortField] ?? '') * direction
       );
     }
     return sorted;
-  }, [concerts, sortField]);
+  }, [concerts, sortField, sortDirection]);
 
   const Rating = ({ rating }) => {
     const filledStars = Array.from({ length: rating }, (_, ratingIndex) => (
@@ -99,17 +107,36 @@ export function TicketsList() {
     <section id="tickets" className={style.tickets}>
       <div className={style['ticket__title-container']}>
         <h2 className={style.tickets__title}>concerts</h2>
-        <ConfigProvider theme={{ components: { Select: { ...selectTheme } } }}>
-          <Select
-            allowClear
-            size="large"
-            placeholder="sort by"
-            options={SORT_OPTIONS}
-            value={sortField}
-            onChange={(value) => setSortField(value ?? null)}
-            className={style['sort-select']}
-          />
-        </ConfigProvider>
+        <div className={style['sort-controls']}>
+          <ConfigProvider theme={{ components: { Select: { ...selectTheme } } }}>
+            <Select
+              allowClear
+              size="large"
+              placeholder="sort by"
+              options={SORT_OPTIONS}
+              value={sortField === 'year' ? undefined : sortField}
+              onChange={(value) => setSortField(value ?? 'year')}
+              className={style['sort-select']}
+            />
+          </ConfigProvider>
+          <ConfigProvider theme={rainbowBtnTheme}>
+            <Button
+              type="primary"
+              shape="circle"
+              className={style['sort-direction-btn']}
+              onClick={() =>
+                setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+              }
+              icon={
+                sortDirection === 'asc' ? (
+                  <SortAscendingOutlined />
+                ) : (
+                  <SortDescendingOutlined />
+                )
+              }
+            />
+          </ConfigProvider>
+        </div>
       </div>
       <hr className={style['tickets__break']} />
       <div className={style.tickets__wrapper}>

@@ -18,6 +18,18 @@
 
 }
 
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sort-direction-btn {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+}
+
 .sort-select {
   width: 15rem;
   height: 30px !important;
@@ -26,6 +38,15 @@
 .sort-select :global(.ant-select-selector) {
   height: 30px !important;
   align-items: center;
+}
+
+.sort-select :global(.ant-select-selection-search-input),
+.sort-select :global(.ant-select-selection-placeholder),
+.sort-select :global(.ant-select-selection-item) {
+  height: 30px !important;
+  line-height: 30px !important;
+  position: relative;
+  top: -1px;
 }
 
 .tickets__title {
@@ -47,7 +68,6 @@
   display: grid;
   row-gap: 3rem;
   justify-items: center;
-  margin-bottom: 3rem;
   grid-template-rows: auto;
   width: var(--content-width);
   grid-template-columns: repeat(2, 1fr);
