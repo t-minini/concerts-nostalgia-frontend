@@ -75,26 +75,22 @@ export function AddConcert({ onCreate }) {
       console.log(response);
 
       onCreate(response.data);
-      setConcert(response.data);
-      
-      message.loading({ content: 'Creating concert...', duration: 2 });
-      setTimeout(() => {
-        message.success({
-          content: 'Concert created successfully!',
-          duration: 2,
-        });
-        setOpen(false);
-        setConcert({
-          tour: '',
-          artist: '',
-          year: 0,
-          location: '',
-          city: '',
-          country: '',
-          rating: 0,
-          background: '',
-        });
-      }, 2000);
+
+      message.success({
+        content: 'Concert created successfully!',
+        duration: 2,
+      });
+      setOpen(false);
+      setConcert({
+        tour: '',
+        artist: '',
+        year: 0,
+        location: '',
+        city: '',
+        country: '',
+        rating: 0,
+        background: '',
+      });
     } catch (error) {
       console.log('Error creating concert:', error);
       message.error('Failed to create concert!');

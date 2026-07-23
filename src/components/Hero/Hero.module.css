@@ -35,10 +35,14 @@
 }
 
 .hero__copyright-container {
-  right: 1rem;
-  bottom: 1rem;
+  left: 1rem;
+  bottom: 2rem;
   display: flex;
+  flex-direction: row;
   position: absolute;
+  writing-mode: vertical-rl;
+  text-orientation: sideways;
+  transform: rotate(180deg);
 }
 
 .hero__copyright-text {
