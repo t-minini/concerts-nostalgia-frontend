@@ -12,10 +12,20 @@
 
 .ticket__title-container {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   width: var(--content-width);
   justify-content: space-between;
 
+}
+
+.sort-select {
+  width: 15rem;
+  height: 30px !important;
+}
+
+.sort-select :global(.ant-select-selector) {
+  height: 30px !important;
+  align-items: center;
 }
 
 .tickets__title {

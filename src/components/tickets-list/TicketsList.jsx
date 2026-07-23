@@ -1,8 +1,22 @@
 import style from './TicketsList.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { Select, ConfigProvider } from 'antd';
 import { api } from '../../api/concerts-nostalgia-api';
+import { selectTheme } from '../../styles/antdesign-themes';
 import { AddConcert } from '../add-concert/AddConcert';
 import { ConcertDetails } from './../concert-details/ConcertDetails';
+
+const SORT_OPTIONS = [
+  { value: 'tour', label: 'tour / concert' },
+  { value: 'artist', label: 'artist / band' },
+  { value: 'location', label: 'location' },
+  { value: 'city', label: 'city' },
+  { value: 'country', label: 'country' },
+  { value: 'year', label: 'year' },
+  { value: 'rating', label: 'rating' },
+];
+
+const NUMERIC_SORT_FIELDS = new Set(['year', 'rating']);
 
 export function TicketsList() {
   const [concerts, setConcerts] = useState([
@@ -44,6 +58,22 @@ export function TicketsList() {
     setConcerts((prev) => prev.filter((c) => c._id !== id));
   }
 
+  const [sortField, setSortField] = useState(null);
+
+  const sortedConcerts = useMemo(() => {
+    if (!sortField) return concerts;
+
+    const sorted = [...concerts];
+    if (NUMERIC_SORT_FIELDS.has(sortField)) {
+      sorted.sort((a, b) => (a[sortField] ?? 0) - (b[sortField] ?? 0));
+    } else {
+      sorted.sort((a, b) =>
+        (a[sortField] ?? '').localeCompare(b[sortField] ?? '')
+      );
+    }
+    return sorted;
+  }, [concerts, sortField]);
+
   const Rating = ({ rating }) => {
     const filledStars = Array.from({ length: rating }, (_, ratingIndex) => (
       <span key={ratingIndex} className={style['ticket__container-rate']}>
@@ -69,10 +99,21 @@ export function TicketsList() {
     <section id="tickets" className={style.tickets}>
       <div className={style['ticket__title-container']}>
         <h2 className={style.tickets__title}>concerts</h2>
+        <ConfigProvider theme={{ components: { Select: { ...selectTheme } } }}>
+          <Select
+            allowClear
+            size="large"
+            placeholder="sort by"
+            options={SORT_OPTIONS}
+            value={sortField}
+            onChange={(value) => setSortField(value ?? null)}
+            className={style['sort-select']}
+          />
+        </ConfigProvider>
       </div>
       <hr className={style['tickets__break']} />
       <div className={style.tickets__wrapper}>
-        {concerts.map((currentConcert) => {
+        {sortedConcerts.map((currentConcert) => {
           return (
             <div
               className={`${style.ticket__container} ${
