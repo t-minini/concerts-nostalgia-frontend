@@ -12,7 +12,7 @@ export function Footer() {
         >
           <h2 className={style.footer__title}>concerts nostalgia</h2>
           <p className={style.footer__text}>
-            your live concerts journey, revisited
+            my live concerts journey, revisited
           </p>
         </Link>
         <div className={style['footer__links-container']}>
@@ -43,11 +43,20 @@ export function Footer() {
           >
             email
           </a>
+          <a
+            rel="noreferrer"
+            title="website"
+            target={'_blank'}
+            className={style.footer__link}
+            href="https://tuliominini.com/"
+          >
+            website
+          </a>
         </div>
       </div>
       <div className={style['footer__copyright-container']}>
         <p className={style['footer__copyright-text']}>
-          &copy; 2024 Designed and built by Tulio Minini 
+          &copy; 2026 Designed and built by Tulio Minini
         </p>
       </div>
     </footer>

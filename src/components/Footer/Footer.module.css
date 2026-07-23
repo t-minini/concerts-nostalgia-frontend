@@ -41,10 +41,9 @@
 }
 
 .footer__links-container {
-  width: 25%;
+  gap: 2rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .footer__link {

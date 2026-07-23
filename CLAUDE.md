@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Concerts Nostalgia — a personal app for logging live concerts attended ("your live concerts journey, revisited"). This is the frontend; the backend (Express + MongoDB) lives in a separate repo, [concerts-nostalgia-backend](https://github.com/t-minini/concerts-nostalgia-backend). Per the README, the project is still under active/early development.
+Concerts Nostalgia — a personal app for logging live concerts attended ("my live concerts journey, revisited"). This is the frontend; the backend (Express + MongoDB) lives in a separate repo, [concerts-nostalgia-backend](https://github.com/t-minini/concerts-nostalgia-backend). Per the README, the project is still under active/early development.
 
 ## Commands
 
