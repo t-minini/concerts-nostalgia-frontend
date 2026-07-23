@@ -3,6 +3,8 @@ import { Link } from 'react-scroll';
 import style from './Hero.module.css';
 import heroImg from './../../assets/images/kelvin-moquete-image.jpg';
 
+const HERO_TITLE = 'concerts nostalgia';
+
 export function Hero() {
   const [isInHero, setIsInHero] = useState(true);
 
@@ -18,7 +20,17 @@ export function Hero() {
   return (
     <section id="hero" className={style.hero}>
       <div className={style.hero__container}>
-        <h1 className={style.hero__title}>concerts nostalgia</h1>
+        <h1 className={style.hero__title}>
+          {HERO_TITLE.split('').map((char, index) => (
+            <span
+              key={index}
+              className={style['hero__title-letter']}
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              {char === ' ' ? ' ' : char}
+            </span>
+          ))}
+        </h1>
         <p className={style.hero__text}>my live concerts journey, revisited</p>
       </div>
       {isInHero && (

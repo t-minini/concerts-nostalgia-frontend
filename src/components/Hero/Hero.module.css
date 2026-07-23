@@ -19,13 +19,33 @@
 .hero__title {
   font-size: 11rem;
   text-align: center;
+  font-weight: var(--extraBold-800);
+  cursor: default;
+}
+
+.hero__title-letter {
+  display: inline-block;
   color: transparent;
   background-clip: text;
-  font-weight: var(--extraBold-800);
   background-image: var(--gradient);
   background-size: 300% 300%;
-  cursor: default;
   animation: gradient-move 6s ease infinite;
+  transition: transform 0.2s ease;
+}
+
+.hero__title-letter:hover {
+  transform: scale(1.6);
+}
+
+/* neighboring letters scale up less, tapering outward, for a wave effect */
+.hero__title-letter:hover + .hero__title-letter,
+.hero__title-letter:has(+ .hero__title-letter:hover) {
+  transform: scale(1.2);
+}
+
+.hero__title-letter:hover + .hero__title-letter + .hero__title-letter,
+.hero__title-letter:has(+ .hero__title-letter + .hero__title-letter:hover) {
+  transform: scale(1.05);
 }
 
 @keyframes gradient-move {
