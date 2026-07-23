@@ -1,6 +1,6 @@
 import style from './TicketsList.module.css';
 import { useState, useEffect, useMemo } from 'react';
-import { Select, Button, ConfigProvider } from 'antd';
+import { Select, Button, Tooltip, ConfigProvider } from 'antd';
 import {
   SortAscendingOutlined,
   SortDescendingOutlined,
@@ -120,21 +120,27 @@ export function TicketsList() {
             />
           </ConfigProvider>
           <ConfigProvider theme={rainbowBtnTheme}>
-            <Button
-              type="primary"
-              shape="circle"
-              className={style['sort-direction-btn']}
-              onClick={() =>
-                setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+            <Tooltip
+              title={
+                sortDirection === 'asc' ? 'Sort descending' : 'Sort ascending'
               }
-              icon={
-                sortDirection === 'asc' ? (
-                  <SortAscendingOutlined />
-                ) : (
-                  <SortDescendingOutlined />
-                )
-              }
-            />
+            >
+              <Button
+                type="primary"
+                shape="circle"
+                className={style['sort-direction-btn']}
+                onClick={() =>
+                  setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+                }
+                icon={
+                  sortDirection === 'asc' ? (
+                    <SortAscendingOutlined />
+                  ) : (
+                    <SortDescendingOutlined />
+                  )
+                }
+              />
+            </Tooltip>
           </ConfigProvider>
         </div>
       </div>
