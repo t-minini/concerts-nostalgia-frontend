@@ -11,6 +11,7 @@ import { AddConcert } from '../add-concert/AddConcert';
 import { ConcertDetails } from './../concert-details/ConcertDetails';
 
 const SORT_OPTIONS = [
+  { value: 'year', label: 'year / month' },
   { value: 'tour', label: 'tour / concert' },
   { value: 'artist', label: 'artist / band' },
   { value: 'location', label: 'location' },
@@ -61,26 +62,29 @@ export function TicketsList() {
     setConcerts((prev) => prev.filter((c) => c._id !== id));
   }
 
-  const [sortField, setSortField] = useState('year');
+  const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState('desc');
+  const effectiveSortField = sortField ?? 'year';
 
   const sortedConcerts = useMemo(() => {
-    if (!sortField) return concerts;
-
     const direction = sortDirection === 'asc' ? 1 : -1;
     const sorted = [...concerts];
-    if (NUMERIC_SORT_FIELDS.has(sortField)) {
+    if (NUMERIC_SORT_FIELDS.has(effectiveSortField)) {
       sorted.sort(
-        (a, b) => ((a[sortField] ?? 0) - (b[sortField] ?? 0)) * direction
+        (a, b) =>
+          ((a[effectiveSortField] ?? 0) - (b[effectiveSortField] ?? 0)) *
+          direction
       );
     } else {
       sorted.sort(
         (a, b) =>
-          (a[sortField] ?? '').localeCompare(b[sortField] ?? '') * direction
+          (a[effectiveSortField] ?? '').localeCompare(
+            b[effectiveSortField] ?? ''
+          ) * direction
       );
     }
     return sorted;
-  }, [concerts, sortField, sortDirection]);
+  }, [concerts, effectiveSortField, sortDirection]);
 
   const Rating = ({ rating }) => {
     const filledStars = Array.from({ length: rating }, (_, ratingIndex) => (
@@ -114,8 +118,8 @@ export function TicketsList() {
               size="large"
               placeholder="sort by"
               options={SORT_OPTIONS}
-              value={sortField === 'year' ? undefined : sortField}
-              onChange={(value) => setSortField(value ?? 'year')}
+              value={sortField ?? undefined}
+              onChange={(value) => setSortField(value ?? null)}
               className={style['sort-select']}
             />
           </ConfigProvider>
