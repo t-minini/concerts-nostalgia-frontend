@@ -3,6 +3,7 @@
   height: 100dvh;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 
 .hero__container {
