@@ -24,8 +24,26 @@ import {
   ConfigProvider,
 } from 'antd';
 
+function DisabledFieldGuard({ disabled, children }) {
+  return (
+    <div style={{ position: 'relative' }}>
+      {children}
+      {disabled && (
+        <div
+          style={{ position: 'absolute', inset: 0, cursor: 'not-allowed' }}
+          onClick={() =>
+            message.info({
+              content: 'Click "Edit" to modify this concert',
+              duration: 2,
+            })
+          }
+        />
+      )}
+    </div>
+  );
+}
+
 export function ConcertDetails(currentConcert) {
-  const [rate, setRate] = useState();
   const [open, setOpen] = useState(false);
   const [hoverPos, setHoverPos] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -39,17 +57,6 @@ export function ConcertDetails(currentConcert) {
   useEffect(() => {
     setConcertData(currentConcert.concerts);
   }, [currentConcert.concerts]);
-
-  const [concert, setConcert] = useState({
-    tour: '',
-    artist: '',
-    year: 0,
-    location: '',
-    city: '',
-    country: '',
-    rating: 1,
-    background: 'background-one',
-  });
 
   function handleCancel() {
     setOpen(false);
@@ -108,9 +115,7 @@ export function ConcertDetails(currentConcert) {
   }
 
   function handleRating(value) {
-    console.log('Selected rating:', value);
-    setRate(value);
-    setConcert({ ...concertData, rating: value });
+    setConcertData({ ...concertData, rating: value });
   }
 
   const editAndSaveBtn = editMode ? (
@@ -212,52 +217,60 @@ export function ConcertDetails(currentConcert) {
                       <label style={{ color: '#ffffff' }}>tour / concert</label>
                     }
                   >
-                    <Input
-                      name="tour"
-                      placeholder="enter tour"
-                      value={concertData.tour}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                    />
+                    <DisabledFieldGuard disabled={!editMode}>
+                      <Input
+                        name="tour"
+                        placeholder="enter tour"
+                        value={concertData.tour}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                      />
+                    </DisabledFieldGuard>
                   </Form.Item>
                   <Form.Item
                     label={<label style={{ color: '#ffffff' }}>location</label>}
                   >
-                    <Input
-                      name="location"
-                      placeholder="enter location"
-                      value={concertData.location}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                    />
+                    <DisabledFieldGuard disabled={!editMode}>
+                      <Input
+                        name="location"
+                        placeholder="enter location"
+                        value={concertData.location}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                      />
+                    </DisabledFieldGuard>
                   </Form.Item>
                   <Form.Item
                     label={<label style={{ color: '#ffffff' }}>country</label>}
                   >
-                    <Input
-                      name="country"
-                      placeholder="enter country"
-                      value={concertData.country}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                    />
+                    <DisabledFieldGuard disabled={!editMode}>
+                      <Input
+                        name="country"
+                        placeholder="enter country"
+                        value={concertData.country}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                      />
+                    </DisabledFieldGuard>
                   </Form.Item>
                   <Form.Item
                     label={<label style={{ color: '#ffffff' }}>rating</label>}
                   >
-                    <Select
-                      placeholder="choose a rate"
-                      name="rating"
-                      value={concertData.rating}
-                      disabled={!editMode}
-                      onChange={handleRating}
-                    >
-                      <Select.Option value={1}>1</Select.Option>
-                      <Select.Option value={2}>2</Select.Option>
-                      <Select.Option value={3}>3</Select.Option>
-                      <Select.Option value={4}>4</Select.Option>
-                      <Select.Option value={5}>5</Select.Option>
-                    </Select>
+                    <DisabledFieldGuard disabled={!editMode}>
+                      <Select
+                        placeholder="choose a rate"
+                        name="rating"
+                        value={concertData.rating}
+                        disabled={!editMode}
+                        onChange={handleRating}
+                      >
+                        <Select.Option value={1}>1</Select.Option>
+                        <Select.Option value={2}>2</Select.Option>
+                        <Select.Option value={3}>3</Select.Option>
+                        <Select.Option value={4}>4</Select.Option>
+                        <Select.Option value={5}>5</Select.Option>
+                      </Select>
+                    </DisabledFieldGuard>
                   </Form.Item>
                 </Col>
               </Row>
@@ -270,35 +283,41 @@ export function ConcertDetails(currentConcert) {
                   <Form.Item
                     label={<label style={{ color: '#ffffff' }}>artist</label>}
                   >
-                    <Input
-                      name="artist"
-                      placeholder="enter artist"
-                      value={concertData.artist}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                    />
+                    <DisabledFieldGuard disabled={!editMode}>
+                      <Input
+                        name="artist"
+                        placeholder="enter artist"
+                        value={concertData.artist}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                      />
+                    </DisabledFieldGuard>
                   </Form.Item>
                   <Form.Item
                     label={<label style={{ color: '#ffffff' }}>year</label>}
                   >
-                    <Input
-                      name="year"
-                      placeholder="enter year"
-                      value={concertData.year}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                    />
+                    <DisabledFieldGuard disabled={!editMode}>
+                      <Input
+                        name="year"
+                        placeholder="enter year"
+                        value={concertData.year}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                      />
+                    </DisabledFieldGuard>
                   </Form.Item>
                   <Form.Item
                     label={<label style={{ color: '#ffffff' }}>city</label>}
                   >
-                    <Input
-                      name="city"
-                      placeholder="enter city"
-                      value={concertData.city}
-                      onChange={handleChange}
-                      disabled={!editMode}
-                    />
+                    <DisabledFieldGuard disabled={!editMode}>
+                      <Input
+                        name="city"
+                        placeholder="enter city"
+                        value={concertData.city}
+                        onChange={handleChange}
+                        disabled={!editMode}
+                      />
+                    </DisabledFieldGuard>
                   </Form.Item>
                   <Form.Item
                     label={
@@ -306,37 +325,40 @@ export function ConcertDetails(currentConcert) {
                     }
                     onChange={handleChange}
                   >
-                    <Select
-                      placeholder="choose ticket style"
-                      name="background"
-                      value={concertData.background}
-                      disabled={!editMode}
-                      onChange={(value) =>
-                        setConcert({ ...concertData, background: value })
-                      }
-                    >
-                      <Select.Option value="background-one">
-                        style one
-                      </Select.Option>
-                      <Select.Option value="background-two">
-                        style two
-                      </Select.Option>
-                      <Select.Option value="background-three">
-                        style three
-                      </Select.Option>
-                      <Select.Option value="background-four">
-                        style four
-                      </Select.Option>
-                      <Select.Option value="background-five">
-                        style five
-                      </Select.Option>
-                    </Select>
+                    <DisabledFieldGuard disabled={!editMode}>
+                      <Select
+                        placeholder="choose ticket style"
+                        name="background"
+                        value={concertData.background}
+                        disabled={!editMode}
+                        onChange={(value) =>
+                          setConcertData({ ...concertData, background: value })
+                        }
+                      >
+                        <Select.Option value="background-one">
+                          style one
+                        </Select.Option>
+                        <Select.Option value="background-two">
+                          style two
+                        </Select.Option>
+                        <Select.Option value="background-three">
+                          style three
+                        </Select.Option>
+                        <Select.Option value="background-four">
+                          style four
+                        </Select.Option>
+                        <Select.Option value="background-five">
+                          style five
+                        </Select.Option>
+                      </Select>
+                    </DisabledFieldGuard>
                   </Form.Item>
                 </Col>
               </Row>
             </Flex>
             <Form.Item
               label={<label style={{ color: '#ffffff' }}>images</label>}
+              style={{ display: 'none' }}
             >
               <Form.Item
                 name="dragger"

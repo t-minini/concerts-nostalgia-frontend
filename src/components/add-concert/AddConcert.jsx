@@ -286,6 +286,7 @@ export function AddConcert({ onCreate }) {
             </Flex>
             <Form.Item
               label={<label style={{ color: '#ffffff' }}>images</label>}
+              style={{ display: 'none' }}
             >
               <Form.Item name="dragger" valuePropName="fileList" noStyle>
                 <Upload.Dragger name="files" action="/upload.do" disabled>
