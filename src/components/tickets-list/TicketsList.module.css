@@ -10,12 +10,22 @@
   background-color: var(--black);
 }
 
+.ticket__header {
+  top: 0;
+  z-index: 10;
+  width: 100vw;
+  display: flex;
+  position: sticky;
+  justify-content: center;
+  background-color: var(--black);
+}
+
 .ticket__title-container {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  padding: 1.8rem 0;
   width: var(--content-width);
   justify-content: space-between;
-
 }
 
 .sort-controls {
@@ -50,6 +60,7 @@
 }
 
 .tickets__title {
+  cursor: pointer;
   font-size: 5rem;
   line-height: 4rem;
   color: var(--font-light);
@@ -58,7 +69,6 @@
 .tickets__break {
   border: none;
   height: 0.1rem;
-  margin-top: 3rem;
   margin-bottom: 3rem;
   width: var(--content-width);
   background-color: var(--font-light);

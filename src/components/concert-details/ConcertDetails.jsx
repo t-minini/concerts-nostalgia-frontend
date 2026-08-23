@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { UploadOutlined } from '@ant-design/icons';
 import { api } from '../../api/concerts-nostalgia-api';
 import {
@@ -26,6 +27,7 @@ import {
 export function ConcertDetails(currentConcert) {
   const [rate, setRate] = useState();
   const [open, setOpen] = useState(false);
+  const [hoverPos, setHoverPos] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [concertData, setConcertData] = useState(currentConcert.concerts);
@@ -141,7 +143,35 @@ export function ConcertDetails(currentConcert) {
       <span
         style={{ position: 'absolute', width: '100%', height: '100%' }}
         onClick={showModal}
+        onMouseMove={(event) =>
+          setHoverPos({ x: event.clientX, y: event.clientY })
+        }
+        onMouseLeave={() => setHoverPos(null)}
       ></span>
+      {hoverPos &&
+        createPortal(
+          <div
+            style={{
+              top: hoverPos.y + 12,
+              left: hoverPos.x + 12,
+              position: 'fixed',
+              zIndex: 1000,
+              padding: '6px 8px',
+              fontSize: '14px',
+              lineHeight: '1.5714285714285714',
+              color: '#ffffff',
+              borderRadius: '6px',
+              whiteSpace: 'nowrap',
+              pointerEvents: 'none',
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+              boxShadow:
+                '0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05)',
+            }}
+          >
+            Click to edit
+          </div>,
+          document.body
+        )}
       <ConfigProvider
         theme={{
           components: {

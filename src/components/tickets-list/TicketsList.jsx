@@ -1,5 +1,6 @@
 import style from './TicketsList.module.css';
 import { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-scroll';
 import { Select, Button, Tooltip, ConfigProvider } from 'antd';
 import {
   SortAscendingOutlined,
@@ -109,43 +110,55 @@ export function TicketsList() {
 
   return (
     <section id="tickets" className={style.tickets}>
-      <div className={style['ticket__title-container']}>
-        <h2 className={style.tickets__title}>concerts</h2>
-        <div className={style['sort-controls']}>
-          <ConfigProvider theme={{ components: { Select: { ...selectTheme } } }}>
-            <Select
-              allowClear
-              size="large"
-              placeholder="sort by"
-              options={SORT_OPTIONS}
-              value={sortField ?? undefined}
-              onChange={(value) => setSortField(value ?? null)}
-              className={style['sort-select']}
-            />
-          </ConfigProvider>
-          <ConfigProvider theme={rainbowBtnTheme}>
-            <Tooltip
-              title={
-                sortDirection === 'asc' ? 'Sort descending' : 'Sort ascending'
-              }
+      <div className={style['ticket__header']}>
+        <div className={style['ticket__title-container']}>
+          <Tooltip title="Back to top">
+            <Link to="tickets" smooth={true} duration={500}>
+              <h2 className={style.tickets__title}>concerts</h2>
+            </Link>
+          </Tooltip>
+          <div className={style['sort-controls']}>
+            <ConfigProvider
+              theme={{ components: { Select: { ...selectTheme } } }}
             >
-              <Button
-                type="primary"
-                shape="circle"
-                className={style['sort-direction-btn']}
-                onClick={() =>
-                  setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
-                }
-                icon={
-                  sortDirection === 'asc' ? (
-                    <SortAscendingOutlined />
-                  ) : (
-                    <SortDescendingOutlined />
-                  )
-                }
+              <Select
+                allowClear
+                size="large"
+                placeholder="sort by"
+                options={SORT_OPTIONS}
+                value={sortField ?? undefined}
+                onChange={(value) => setSortField(value ?? null)}
+                className={style['sort-select']}
               />
-            </Tooltip>
-          </ConfigProvider>
+            </ConfigProvider>
+            <ConfigProvider theme={rainbowBtnTheme}>
+              <Tooltip
+                title={
+                  sortDirection === 'asc'
+                    ? 'Sort descending'
+                    : 'Sort ascending'
+                }
+              >
+                <Button
+                  type="primary"
+                  shape="circle"
+                  className={style['sort-direction-btn']}
+                  onClick={() =>
+                    setSortDirection((prev) =>
+                      prev === 'asc' ? 'desc' : 'asc'
+                    )
+                  }
+                  icon={
+                    sortDirection === 'asc' ? (
+                      <SortAscendingOutlined />
+                    ) : (
+                      <SortDescendingOutlined />
+                    )
+                  }
+                />
+              </Tooltip>
+            </ConfigProvider>
+          </div>
         </div>
       </div>
       <hr className={style['tickets__break']} />
