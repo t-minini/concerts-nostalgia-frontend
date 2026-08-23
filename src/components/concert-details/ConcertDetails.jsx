@@ -33,7 +33,7 @@ function DisabledFieldGuard({ disabled, children }) {
           style={{ position: 'absolute', inset: 0, cursor: 'not-allowed' }}
           onClick={() =>
             message.info({
-              content: 'Click "Edit" to modify this concert',
+              content: 'Click Edit to update',
               duration: 2,
             })
           }
