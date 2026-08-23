@@ -249,7 +249,7 @@ export function ConcertDetails(currentConcert) {
                     />
                   </Form.Item>
                   <Form.Item
-                    label={<label style={{ color: '#ffffff' }}>city</label>}
+                    label={<label style={{ color: '#ffffff' }}>year</label>}
                   >
                     <Input
                       name="year"
