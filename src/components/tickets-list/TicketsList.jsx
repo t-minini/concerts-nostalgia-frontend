@@ -1,7 +1,7 @@
 import style from './TicketsList.module.css';
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-scroll';
-import { Select, Button, Tooltip, ConfigProvider } from 'antd';
+import { Select, Button, Tooltip, ConfigProvider, message } from 'antd';
 import {
   SortAscendingOutlined,
   SortDescendingOutlined,
@@ -24,26 +24,20 @@ const SORT_OPTIONS = [
 const NUMERIC_SORT_FIELDS = new Set(['year', 'rating']);
 
 export function TicketsList() {
-  const [concerts, setConcerts] = useState([
-    {
-      tour: '',
-      artist: '',
-      year: 0,
-      location: '',
-      city: '',
-      country: '',
-      rating: 0,
-      background: '',
-    },
-  ]);
+  const [concerts, setConcerts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchConcerts() {
       try {
+        // await new Promise((resolve) => setTimeout(resolve, 5000)); // preview loading state
         const response = await api.get('/concerts/');
         setConcerts(response.data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        message.error('Could not load concerts. Please refresh the page.');
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchConcerts();
@@ -162,47 +156,56 @@ export function TicketsList() {
         </div>
       </div>
       <hr className={style['tickets__break']} />
-      <div className={style.tickets__wrapper}>
-        {sortedConcerts.map((currentConcert) => {
-          return (
-            <div
-              className={`${style.ticket__container} ${
-                style[currentConcert.background]
-              }`}
-              key={`${currentConcert._id}concerts`}
-            >
-              <ConcertDetails
-                concerts={currentConcert}
-                onUpdate={handleConcertUpdated}
-                onDelete={handleConcertDeleted}
-              />
-              <div className={style['ticket__container-info']}>
-                <p className={style['ticket__container-tour']}>
-                  {currentConcert.tour}
-                </p>
-                <p className={style['ticket__container-artist']}>
-                  {currentConcert.artist}
-                </p>
-                <Rating rating={currentConcert.rating} />
-                <p className={style['ticket__container-venue']}>
-                  {currentConcert.location}
-                </p>
-                <div className={style['ticket__container-city-country']}>
-                  <p className={style['ticket__container-city']}>
-                    {currentConcert.city},&nbsp;
+      {isLoading ? (
+        <div className={style['tickets__loading']}>
+          <div className={style['tickets__loading-spinner']}></div>
+          <p className={style['tickets__loading-text']}>
+            Waking up the server, this may take a moment...
+          </p>
+        </div>
+      ) : (
+        <div className={style.tickets__wrapper}>
+          {sortedConcerts.map((currentConcert) => {
+            return (
+              <div
+                className={`${style.ticket__container} ${
+                  style[currentConcert.background]
+                }`}
+                key={`${currentConcert._id}concerts`}
+              >
+                <ConcertDetails
+                  concerts={currentConcert}
+                  onUpdate={handleConcertUpdated}
+                  onDelete={handleConcertDeleted}
+                />
+                <div className={style['ticket__container-info']}>
+                  <p className={style['ticket__container-tour']}>
+                    {currentConcert.tour}
                   </p>
-                  <p className={style['ticket__container-country']}>
-                    {currentConcert.country}
+                  <p className={style['ticket__container-artist']}>
+                    {currentConcert.artist}
+                  </p>
+                  <Rating rating={currentConcert.rating} />
+                  <p className={style['ticket__container-venue']}>
+                    {currentConcert.location}
+                  </p>
+                  <div className={style['ticket__container-city-country']}>
+                    <p className={style['ticket__container-city']}>
+                      {currentConcert.city},&nbsp;
+                    </p>
+                    <p className={style['ticket__container-country']}>
+                      {currentConcert.country}
+                    </p>
+                  </div>
+                  <p className={style['ticket__container-date']}>
+                    {currentConcert.year}
                   </p>
                 </div>
-                <p className={style['ticket__container-date']}>
-                  {currentConcert.year}
-                </p>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
       <AddConcert onCreate={handleConcertCreated} />
     </section>
   );
